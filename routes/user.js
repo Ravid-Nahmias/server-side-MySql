@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
     return res.status(400).end();
   }
 };
-//====================================GET USERs==========================================================
+//====================================GET USERS==========================================================
 const getUser = async (req, res) => {
   try {
     const sqlQuery = `SELECT * from users`;
@@ -26,10 +26,10 @@ const getUser = async (req, res) => {
   }
 };
 
-//====================================GET USERs==========================================================
+//====================================UPDATE USER========================================================
 const updateUser = async (req, res) => {
   try {
-    //const body_parameters = await validateInput(req.body);
+    if (!req.params.id) return res.status(400).send("ID is missing!");
     const updates = Object.keys(req.body);
     const allowedUpdates = ["name", "email"];
     const isValidOperation = updates.every((update) =>
@@ -56,7 +56,20 @@ const updateUser = async (req, res) => {
   }
 };
 
-const deleteUser = async (req, res) => {};
+//====================================DELETE USER=========================================================
+
+const deleteUser = async (req, res) => {
+  try {
+    if (!req.params.id) return res.status(400).send("ID is missing!");
+    const sqlQuery = `DELETE FROM users WHERE id= '${req.params.id}'`;
+    const result = await sendDataToDB(sqlQuery);
+    return res.status(200).end();
+  } catch (error) {
+    return res.status(400).end();
+  }
+};
+
+//====================================VALIDATE FUNC=======================================================
 
 function validateInput(input) {
   let count = Object.keys(input).length;
@@ -74,6 +87,8 @@ function validateInput(input) {
   }
   return true;
 }
+
+//====================================SEND TO DATABASE=====================================================
 
 function sendDataToDB(sqlQuery) {
   return new Promise((resolve, reject) => {
