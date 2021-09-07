@@ -8,7 +8,7 @@ const createUser = async (req, res) => {
     if (!isInputValidate)
       return res.sendStatus(400).send("Input is not as requiered!");
     const sqlQuery = `INSERT INTO users (name, email) VALUES ('${req.body.name}', '${req.body.email}');`;
-    const result = await sendDataToDB(sqlQuery);
+    await sendDataToDB(sqlQuery);
     return res.status(200).end();
   } catch (error) {
     console.log(error);
@@ -42,12 +42,12 @@ const updateUser = async (req, res) => {
     if (req.body.name) {
       // update the name
       const sqlQuery = `UPDATE users SET name = '${req.body.name}' WHERE id= ${req.params.id};`;
-      const result = await sendDataToDB(sqlQuery);
+      await sendDataToDB(sqlQuery);
     }
     if (req.body.email) {
       // update the email
       sqlQuery = `UPDATE users SET email= '${req.body.email}' WHERE id= ${req.params.id};`;
-      result = await sendDataToDB(sqlQuery);
+      await sendDataToDB(sqlQuery);
     }
 
     return res.status(200).end();
@@ -62,7 +62,7 @@ const deleteUser = async (req, res) => {
   try {
     if (!req.params.id) return res.status(400).send("ID is missing!");
     const sqlQuery = `DELETE FROM users WHERE id= '${req.params.id}'`;
-    const result = await sendDataToDB(sqlQuery);
+    await sendDataToDB(sqlQuery);
     return res.status(200).end();
   } catch (error) {
     return res.status(400).end();
