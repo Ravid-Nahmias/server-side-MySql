@@ -26,7 +26,36 @@ const getUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {};
+//====================================GET USERs==========================================================
+const updateUser = async (req, res) => {
+  try {
+    //const body_parameters = await validateInput(req.body);
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ["name", "email"];
+    const isValidOperation = updates.every((update) =>
+      allowedUpdates.includes(update)
+    );
+    if (!isValidOperation) {
+      // check that all the params we want to update, can be changed
+      return res.status(400).send({ error: "Invalid updates!" });
+    }
+    if (req.body.name) {
+      // update the name
+      const sqlQuery = `UPDATE users SET name = '${req.body.name}' WHERE id= ${req.params.id};`;
+      const result = await sendDataToDB(sqlQuery);
+    }
+    if (req.body.email) {
+      // update the email
+      sqlQuery = `UPDATE users SET email= '${req.body.email}' WHERE id= ${req.params.id};`;
+      result = await sendDataToDB(sqlQuery);
+    }
+
+    return res.status(200).end();
+  } catch (error) {
+    return res.status(400).send(error);
+  }
+};
+
 const deleteUser = async (req, res) => {};
 
 function validateInput(input) {
