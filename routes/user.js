@@ -1,5 +1,6 @@
 const sql = require("../db/mysql");
-
+//==========================================CRUD=========================================================
+//==================================CREATE USER==========================================================
 const createUser = async (req, res) => {
   try {
     if (!req.body) return res.status(400).send("Body is missing!");
@@ -14,7 +15,17 @@ const createUser = async (req, res) => {
     return res.status(400).end();
   }
 };
-const getUser = async (req, res) => {};
+//====================================GET USERs==========================================================
+const getUser = async (req, res) => {
+  try {
+    const sqlQuery = `SELECT * from users`;
+    const result = await sendDataToDB(sqlQuery);
+    return res.send(result);
+  } catch (error) {
+    return res.status(400).end();
+  }
+};
+
 const updateUser = async (req, res) => {};
 const deleteUser = async (req, res) => {};
 
