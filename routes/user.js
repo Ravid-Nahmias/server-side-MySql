@@ -73,7 +73,7 @@ const deleteUser = async (req, res) => {
 
 function validateInput(input) {
   let count = Object.keys(input).length;
-  if (count != 2) return false;
+  if (count !== 2) return false;
   if (input.name) {
     if (!/^[A-Za-z ]+$/.test(input.name)) return false;
   }
